@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 
-import { gql, useMutation } from '@apollo/client'
+// import { gql, useMutation } from '@apollo/client'
 import {
   Box,
   Button,
@@ -11,26 +11,16 @@ import {
   FormErrorMessage,
   Icon,
   Spinner,
-  Table,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Accordion,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
   InputLeftElement,
   InputRightElement,
   Tooltip,
-  Text,
-  Container,
+  Text
 } from '@chakra-ui/react'
+import { Collapse } from '@dts-stn/service-canada-design-system'
 import { useTranslation } from 'react-i18next'
-import { FcDataSheet, FcMinus, FcPlus } from 'react-icons/fc'
-import { FullProperties } from 'xlsx'
+import { FcDataSheet } from 'react-icons/fc'
 
+import DataViewer from './components/DataViewer'
 import { ParseWorker } from './serviceWorker'
 import { ParseEvent } from './worker'
 import './App.css'
@@ -61,42 +51,11 @@ function DeferredRender({
   return children
 }
 
-const dateToStr = (d: Date | undefined) => {
-  if (!d) return 'N/A'
-  return `${d.toLocaleDateString(navigator.language)} - ${d.toLocaleTimeString(
-    navigator.language,
-  )}`
-}
-
-const getColVal = (properties: FullProperties, prop: keyof FullProperties) => {
-  const d = properties[prop]
-  if (prop === 'LastPrinted' && d && typeof d === 'string')
-    return dateToStr(new Date(d))
-  if (prop === 'CreatedDate' || prop === 'ModifiedDate')
-    return dateToStr(properties[prop])
-  return properties[prop] || 'N/A'
-}
-
-const col = (
-  properties: FullProperties,
-  prop: keyof FullProperties,
-  title?: string,
-) => {
-  const v = getColVal(properties, prop)
-  return (
-    <>
-      <Th>{title || prop}</Th>
-      <Td>{v}</Td>
-    </>
-  )
-}
-
 export default function App({ parseWorker }: { parseWorker: ParseWorker }) {
   // const { loading, error, data } = useQuery(SAY_HELLO)
 
   // if (loading) return <p>Loading...</p>
   // if (error) return <p>Oh no... {error.message}</p>
-
   const inFile = useRef<HTMLInputElement>(null)
   const [filename, setFilename] = useState('')
   const [file, setFile] = useState<File | null>(null)
@@ -135,233 +94,143 @@ export default function App({ parseWorker }: { parseWorker: ParseWorker }) {
     undefined
 
   const { t } = useTranslation()
-
-  //
-  // Function for the API call -> useMutation
-  //
-  function GQL() {
-    const Get_Data = gql`
-      mutation verifyJsonFormat($testSheet: JSON!) {
-        verifyJsonFormat(sheetData: $testSheet)
-      }
-    `
-    const [mutation, { loading, error, data }] = useMutation(Get_Data)
-    const testSheet = parserStatus
-
-    useEffect(() => {
-      mutation({ variables: { testSheet } })
-    }, [mutation, testSheet])
-
-    if (data)
-      return (
-        <>
-          {/* Uncomment to view the data */}
-          {/* <pre>{JSON.stringify(data.verifyJsonFormat, null, 2)} </pre> */}
-        </>
-      )
-
-    if (loading) return <> {'Submitting...'}</>
-    if (error) return <> {`Submission error! ${error.message}`}</>
-    else return <></>
-  }
+  // const TEST = gql`
+  //                   mutation saveFile($file: Upload!) {
+  //                     saveFile(file: $file)
+  //                   }
+  //                 `
+  // const [mutation, { loading, error, data }] = useMutation(TEST);
 
   return (
     <>
       <Box className="App">
-        <Box className="App-header" mb={2}>
-          Safe inputs PoC
+        <Box className="Page-header" mb={2}>
+          TB Upload PoC
+        </Box>
+        <Box>
+          A place for Provincial and Territorial Epidemologists to securely upload Tuberculosis Reporting Data.
         </Box>
 
-        <Container maxW="7xl" px={{ base: 5, md: 10 }} mt={8} minH="63vh">
-          <FormControl
-            isInvalid={Boolean(invalid)}
-            isRequired={false}
-            isDisabled={parserStatus && parserStatus.state === 'LOADING'}
-          >
-            <FormLabel htmlFor="writeUpFile"></FormLabel>
-            <InputGroup>
-              <InputLeftElement
-                pointerEvents="none"
-                children={<Icon as={FcDataSheet} />}
-              />
-              <input
-                type="file"
-                ref={inFile}
-                onChange={onFileChanged}
-                accept="
+        <FormControl
+          isInvalid={Boolean(invalid)}
+          isRequired={false}
+          isDisabled={parserStatus && parserStatus.state === 'LOADING'}
+        >
+          <FormLabel htmlFor="writeUpFile"></FormLabel>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents="none"
+              children={<Icon as={FcDataSheet} />}
+            />
+            <input
+              type="file"
+              ref={inFile}
+              onChange={onFileChanged}
+              accept="
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
 application/vnd.ms-excel,
 .xlsb,
 .ods
 "
-                style={{ display: 'none' }}
-              />
-              <Input
-                placeholder={t('safeInputs.inputBar') || ''}
-                onClick={() =>
-                  inFile && inFile.current && inFile.current.click()
-                }
-                readOnly
-                value={filename}
-              />
-              <InputRightElement w="auto"></InputRightElement>
-            </InputGroup>
-            <FormErrorMessage>{invalid}</FormErrorMessage>
-          </FormControl>
-          <br />
+              style={{ display: 'none' }}
+            />
+            <Input
+              placeholder={t('safeInputs.inputBar') || ''}
+              onClick={() =>
+                inFile && inFile.current && inFile.current.click()
+              }
+              readOnly
+              value={filename}
+              style={{ borderRadius: '16px', border: '0.50px black solid' }}
+            />
+            <InputRightElement w="auto"></InputRightElement>
+          </InputGroup>
+          <FormErrorMessage>{invalid}</FormErrorMessage>
+        </FormControl>
+        <br />
 
-          {file === null ? (
-            <Tooltip
-              hasArrow
-              label={t('safeInputs.inputBar')}
-              aria-label="A tooltip"
-            >
-              <Button
-                cursor={'not-allowed'}
-                color="#FFFFFF"
-                bg="#26374a"
-                _hover={{ bg: '#1616FF99' }}
-                as="button"
-              >
-                {t('safeInputs.upload')}
-              </Button>
-            </Tooltip>
-          ) : (
+        {file === null ? (
+          <Tooltip
+            hasArrow
+            label={t('safeInputs.inputBar')}
+            aria-label="A tooltip"
+          >
             <Button
-              bg="#26374a"
+              cursor={'not-allowed'}
               color="#FFFFFF"
-              _hover={{ bg: '#0000DD' }}
-              onClick={() => {
-                file && parseWorker.parse(file)
-                console.log('')
-              }}
+              bg="#26374a"
+              _hover={{ bg: '#1616FF99' }}
+              as="button"
             >
               {t('safeInputs.upload')}
             </Button>
-          )}
+          </Tooltip>
+        ) : (
+          <Button
+            bg="#26374a"
+            color="#FFFFFF"
+            _hover={{ bg: '#0000DD' }}
+            onClick={() => {
+              file && parseWorker.parse(file)
+            }}
+          >
+            {t('safeInputs.upload')}
+          </Button>
+        )}
 
-          {parserStatus && parserStatus.state === 'LOADING' && <Spinner />}
-          {parserStatus && parserStatus.state === 'DONE' && p && (
-            <Box>
-              <br />
-              <Accordion
-                allowToggle
-                defaultIndex={[0]}
-                fontFamily="Noto Sans"
-                fontSize={'16'}
-                color="#333"
-              >
-                <AccordionItem>
-                  {({ isExpanded }) => (
-                    <>
-                      <h2>
-                        <AccordionButton>
-                          {isExpanded ? (
-                            <>
-                              <Box flex="1" textAlign="left">
-                                {t('safeInputs.showLess')}
-                              </Box>{' '}
-                              <FcMinus fontSize="12px" />
-                            </>
-                          ) : (
-                            <>
-                              <Box flex="1" textAlign="left">
-                                {t('safeInputs.showMore')}
-                              </Box>{' '}
-                              <FcPlus fontSize="12px" />
-                            </>
-                          )}
-                        </AccordionButton>
-                      </h2>
-                      <AccordionPanel pb={4}>
-                        <TableContainer>
-                          <Table variant="simple">
-                            <TableCaption>
-                              {t('safeInputs.fileProps')}
-                            </TableCaption>
-                            <Tr>
-                              {col(p, 'Application')}
-                              {col(p, 'SheetNames')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'AppVersion')}
-                              {col(p, 'ContentStatus')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'Title')}
-                              {col(p, 'Subject')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'Author')}
-                              {col(p, 'Manager')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'Company')}
-                              {col(p, 'Category')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'Keywords')}
-                              {col(p, 'Comments')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'LastAuthor')}
-                              {col(p, 'CreatedDate')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'DocSecurity')}
-                              {col(p, 'Identifier')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'SharedDoc')}
-                              {col(p, 'Language')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'HyperlinksChanged')}
-                              {col(p, 'Version')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'LinksUpToDate')}
-                              {col(p, 'Revision')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'ScaleCrop')}
-                              {col(p, 'LastPrinted')}
-                            </Tr>
-                            <Tr>
-                              {col(p, 'Worksheets')}
-                              {col(p, 'ModifiedDate')}
-                            </Tr>
-                          </Table>
-                        </TableContainer>
-                      </AccordionPanel>
-                    </>
-                  )}
-                </AccordionItem>
-              </Accordion>
-              <br />
-
-              <Box textAlign={'left'}>
-                <Text>{t('safeInputs.preview')} </Text>
-                <Box
-                  h="600px"
-                  overflowY={'auto'}
-                  overflow="wrap"
-                  bg="#eee"
-                  border="1px dotted #284162"
-                  padding="5px"
-                  text-align="left"
-                >
-                  <DeferredRender idleTimeout={1000}>
-                    <pre>{JSON.stringify(parserStatus.sheets, null, 2)}</pre>
-                  </DeferredRender>
-                </Box>
+        {parserStatus && parserStatus.state === 'LOADING' && <Spinner />}
+        {parserStatus && parserStatus.state === 'DONE' && p && (
+          <Box>
+            <br />
+            <Box fontSize="2.375rem" fontWeight={700} color="#333" fontStyle="normal" fontFamily="Lato">
+                {`${parserStatus.totalErrors} inconsistencies found`}
               </Box>
-
-              <GQL />
+              <Box>
+                {`We found ${parserStatus.totalErrors} fields that are inconsistent with our new data standard. Not to worry; we’ll still accept data with inconsistencies. However, if you resolve these inconsistencies before uploading, we’ll be able to process your data faster.`}
+              </Box>
+              <Collapse
+                id="errors"
+                title={`Show details of ${parserStatus.totalErrors} inconsistencies`}
+              >
+                <DataViewer sheets={parserStatus.sheets} />
+              </Collapse>
+              <Button
+                bg="#26374a"
+                color="#FFFFFF"
+                _hover={{ bg: '#0000DD' }}
+                onClick={()=>{
+                  // console.log("click here")
+                  // mutation({variables: {file}});
+                }}
+              >
+                Upload Anyway
+              </Button>
               <br />
+
+              <br />
+            <br />
+
+            <Box textAlign={'left'}>
+              <Text>{t('safeInputs.preview')} </Text>
+              <Box
+                h="600px"
+                overflowY={'auto'}
+                overflow="wrap"
+                bg="#eee"
+                border="1px dotted #284162"
+                padding="5px"
+                text-align="left"
+              >
+                {/* <DeferredRender idleTimeout={1000}>
+                  <pre>{JSON.stringify(parserStatus.sheets.map((sheet) => sheet.errors), null, 2)}</pre>
+                </DeferredRender> */}
+              </Box>
             </Box>
-          )}
-        </Container>
+
+            {/* <GQL /> */}
+            <br />
+          </Box>
+        )}
       </Box>
       <br />
     </>
