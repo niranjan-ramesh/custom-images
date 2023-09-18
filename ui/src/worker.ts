@@ -31,7 +31,6 @@ export const parse = async (file: File) => {
       })
     });
     totalErrors += failedRows;
-    // console.log(errors);
     sheets.push({
       sheetName,
       data,

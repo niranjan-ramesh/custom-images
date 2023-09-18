@@ -8,7 +8,6 @@ import {
   ThemeConfig,
   withDefaultColorScheme,
 } from '@chakra-ui/react'
-// import { createUploadLink } from 'apollo-upload-client'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
@@ -57,12 +56,9 @@ const theme = extendTheme(
 )
 
 const client = new ApolloClient({
-  // uri: '/graphql',
-  uri: 'http://localhost:4000/graphql',
+  uri: '/graphql',
+  // uri: 'http://localhost:3000/graphql',
   cache: new InMemoryCache(),
-  // link: createUploadLink({
-  //   uri: 'http://localhost:4000/graphql'
-  // }),
 })
 
 const root = ReactDOM.createRoot(
