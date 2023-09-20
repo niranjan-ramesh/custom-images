@@ -1,0 +1,73 @@
+title: |md
+  # TB Project Architecture
+|
+
+Data Producer: {
+  Upstream Data: {
+    Spreadsheet: {
+      shape: image
+      icon: https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/119_Excel_logo_logos-512.png
+    }
+    Manual Form Entry: {
+      shape: image
+      icon: https://icons.terrastruct.com/essentials%2F263-notepad.svg
+    }
+  }
+  Browser: {
+    tb-safe-inputs Web UI: {
+      shape: image
+      icon: https://icons.terrastruct.com/tech%2Fbrowser-2.svg
+    }
+  }
+  Upstream Data.Spreadsheet -> Browser.tb-safe-inputs Web UI: Process spreadsheet in browser
+  Upstream Data.Manual Form Entry -> Browser.tb-safe-inputs Web UI: Manually enter paper form data
+}
+
+tb-analytics: {
+  GCP Project: {
+    shape: image
+    icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FDeveloper%20Tools%2FCloud%20SDK.svg
+  }
+
+  Google Cloud Storage: {
+    "": {
+      shape: image
+      icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FStorage%2FCloud%20Storage.svg
+    }
+
+    tb-analytics: {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3_Bucket_light-bg.svg
+    }
+  }
+
+  Google Cloud Run: {
+    "": {
+      shape: image
+      icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FCompute%2FCloud%20Run.svg
+    }
+
+    tb-safe-inputs: {
+      "": {
+        shape: image
+        icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+      }
+
+      "": {
+        shape: image
+        icon: https://user-images.githubusercontent.com/709451/182802334-d9c42afe-f35d-4a7b-86ea-9985f73f20c3.png
+      }
+    }
+  }
+
+  Vertex AI Workbench: {
+    Managed Jupyterlab: {
+      shape: image
+      icon: https://jupyter.org/assets/homepage/main-logo.svg
+    }
+  }
+  Google Cloud Run.tb-safe-inputs -> Google Cloud Storage.tb-analytics: Write clean data to parquet files in object storage
+  Google Cloud Storage.tb-analytics <-> Vertex AI Workbench.Managed Jupyterlab: GCS FUSE Mount to Filesystem
+}
+
+Data Producer.Browser.tb-safe-inputs Web UI -> tb-analytics.Google Cloud Run.tb-safe-inputs: Validated data from browser sent to web server
