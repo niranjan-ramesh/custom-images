@@ -1,7 +1,7 @@
 import Ajv from 'ajv';
 import { read, utils, WorkBook } from 'xlsx'
 
-import schema from './schema/test.json';
+import schema from './schema/schema.json';
 
 const ajv = new Ajv({ allErrors: true });
 const validate = ajv.compile(schema);

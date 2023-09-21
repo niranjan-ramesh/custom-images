@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 
-import schema from '../schema/test.json';
+import schema from '../schema/schema.json';
 import { SheetData } from '../worker';
 
 const ajv = new Ajv({ allErrors: true });
