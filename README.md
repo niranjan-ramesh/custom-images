@@ -5,3 +5,7 @@ This project is a reference implementation of the analytics infrastructure for t
 ## Architecture
 
 ![TB Project Architecture Diagram](docs/architecture.svg)
+
+## Security
+
+See the [security.md](docs/security.md) document for an overview of the security practices for this project.
