@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // import { gql, useMutation } from '@apollo/client'
 import {
@@ -24,7 +24,6 @@ import './App.css'
 
 export default function App({ parseWorker }: { parseWorker: ParseWorker }) {
 
-  const inFile = useRef<HTMLInputElement>(null)
   const [filename, setFilename] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [parserStatus, setParserStatus] = useState<ParseEvent>()
@@ -37,6 +36,7 @@ export default function App({ parseWorker }: { parseWorker: ParseWorker }) {
         setDataErrors(validateData(msg.data.sheets));
     }
   }
+
   useEffect(() => {
     parseWorker.addEventListener('message', handleMessages)
 
@@ -62,6 +62,11 @@ export default function App({ parseWorker }: { parseWorker: ParseWorker }) {
       parserStatus.workbook.Props) ||
     undefined
 
+  const totalErrors = dataErrors && dataErrors
+    .flat()
+    .filter((row) => !row.valid)
+    .length;
+
   return (
     <>
       <Box className="App">
@@ -74,7 +79,6 @@ export default function App({ parseWorker }: { parseWorker: ParseWorker }) {
 
         <DataFileUploader
           isDisabled={parserStatus && parserStatus.state === 'LOADING'}
-          inFile={inFile}
           filename={filename}
           onFileChanged={onFileChanged}
           onFileUpload={() => {
@@ -87,57 +91,60 @@ export default function App({ parseWorker }: { parseWorker: ParseWorker }) {
           <Box>
             <br />
             <Box fontSize="2.375rem" fontWeight={700} color="#333" fontStyle="normal" fontFamily="Lato">
-              {`${parserStatus.totalErrors} inconsistencies found`}
+              {`${totalErrors} inconsistencies found`}
             </Box>
             <Box>
-              {`We found ${parserStatus.totalErrors} fields that are inconsistent with our new data standard. Not to worry; we’ll still accept data with inconsistencies. However, if you resolve these inconsistencies before uploading, we’ll be able to process your data faster.`}
+              {`We found ${totalErrors} rows that are inconsistent with our new data standard. Not to worry; we’ll still accept data with inconsistencies. However, if you resolve these inconsistencies before uploading, we’ll be able to process your data faster.`}
             </Box>
             <Collapse
               id="errors"
-              title={`Show details of ${parserStatus.totalErrors} inconsistencies`}
+              title={`Show details of ${totalErrors} inconsistencies`}
             >
               {parserStatus.sheets.map((sheet: SheetData, sheetNumber: number) => (
 
-                  sheet.data && sheet.data.length && (
-                    <Accordion
-                      key={sheetNumber}
-                      allowToggle
-                      defaultIndex={[0]}
-                      fontFamily="Noto Sans"
-                      fontSize={'16'}
-                      color="#333"
-                    >
-                      <AccordionItem>
-                        {({ isExpanded }) => (
-                          <>
-                            <AccordionButton>
-                              {isExpanded ? (
-                                <>
-                                  <Box flex="1" textAlign="left">
-                                    {sheet.sheetName}
-                                  </Box>{' '}
-                                  <FcMinus fontSize="12px" />
-                                </>
-                              ) : (
-                                <>
-                                  <Box flex="1" textAlign="left">
-                                    {sheet.sheetName}
-                                  </Box>{' '}
-                                  <FcPlus fontSize="12px" />
-                                </>
-                              )}
-                            </AccordionButton>
-                            <AccordionPanel pb={4}>
-                              <TableContainer>
-                                {<PaginatedTable headers={Object.keys(sheet.data[0])} sheetData={sheet.data} dataErrors={dataErrors[sheetNumber]} onUpdate={()=>setDataErrors(validateData(parserStatus.sheets))}/>}
-                              </TableContainer>
-                            </AccordionPanel>
-                          </>
-                        )}
-                      </AccordionItem>
-                    </Accordion>
-                  )
-                
+                sheet.data && sheet.data.length && (
+                  <Accordion
+                    key={sheetNumber}
+                    allowToggle
+                    defaultIndex={[0]}
+                    fontFamily="Noto Sans"
+                    fontSize={'16'}
+                    color="#333"
+                  >
+                    <AccordionItem>
+                      {({ isExpanded }) => (
+                        <>
+                          <AccordionButton>
+                            {isExpanded ? (
+                              <>
+                                <Box flex="1" textAlign="left">
+                                  {sheet.sheetName}
+                                </Box>{' '}
+                                <FcMinus fontSize="12px" />
+                              </>
+                            ) : (
+                              <>
+                                <Box flex="1" textAlign="left">
+                                  {sheet.sheetName}
+                                </Box>{' '}
+                                <FcPlus fontSize="12px" />
+                              </>
+                            )}
+                          </AccordionButton>
+                          <AccordionPanel pb={4}>
+                            <TableContainer>
+                              {<PaginatedTable
+                                sheetData={sheet.data}
+                                dataErrors={dataErrors[sheetNumber]}
+                                onUpdate={() => setDataErrors(validateData(parserStatus.sheets))} />}
+                            </TableContainer>
+                          </AccordionPanel>
+                        </>
+                      )}
+                    </AccordionItem>
+                  </Accordion>
+                )
+
               )
               )}
 
@@ -147,7 +154,7 @@ export default function App({ parseWorker }: { parseWorker: ParseWorker }) {
               color="#FFFFFF"
               _hover={{ bg: '#0000DD' }}
               onClick={() => {
-                // console.log("click here")
+                console.log(parserStatus.sheets)
                 // mutation({variables: {file}});
               }}
             >
@@ -158,7 +165,7 @@ export default function App({ parseWorker }: { parseWorker: ParseWorker }) {
             <br />
             <br />
 
-            
+
 
             <br />
           </Box>

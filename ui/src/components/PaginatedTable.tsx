@@ -1,96 +1,64 @@
 import React, { useMemo, useState } from 'react';
 
-import { Table, Tbody, Thead, Tr, Th, Td, Input, Tooltip } from '@chakra-ui/react';
+import { Table, Tbody, Thead, Tr, Th, Td } from '@chakra-ui/react';
 import { Pagination } from "@dts-stn/service-canada-design-system";
+import { ErrorObject } from 'ajv';
 
-function PaginatedTable({ sheetData, headers, dataErrors, onUpdate }: { sheetData: any; headers: string[]; dataErrors: { valid: boolean; errors: any[] }[]; onUpdate: () => void }) {
+import EditableCell from './EditableCell';
+import { headers, constructErrorMessage } from '../utils/errorUtils'
+
+function PaginatedTable({ sheetData, dataErrors, onUpdate }: { sheetData: Record<string, string|number>[]; dataErrors: { valid: boolean; errors: ErrorObject[] }[]; onUpdate: () => void }) {
     const PageSize = 10;
-    const [currentPage, setCurrentPage] = useState(1);
-    const [editingCell, setEditingCell] = useState<{ rowIndex: number; colIndex: number } | null>(
-        null
-    );
-    const [editedValue, setEditedValue] = useState<string | null>(null);
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const currentTableData = useMemo(() => {
+    const currentTableData: Record<string, string|number>[] = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * PageSize;
         const lastPageIndex = firstPageIndex + PageSize;
         return sheetData.slice(firstPageIndex, lastPageIndex);
     }, [currentPage, sheetData]);
 
-    const offSet = (currentPage - 1) * PageSize;
+    const offSet: number = (currentPage - 1) * PageSize;
 
-    const isErrorCell = (rowIndex: number, columnIndex: number) => {
+    const isErrorCell = (rowIndex: number, header: string) => {
         const error = dataErrors[offSet + rowIndex];
         if (!error || !error.errors || error.valid) {
             return false;
         }
 
-        const match = error.errors.find((error: any) => error.instancePath.substring(1) === headers[columnIndex])
-        return match && {
-            "keyword" : match.keyword, 
-            "message": match.message,
-            "params": match.params
-        }
-    };
+        const match = error.errors.find((error: any) => error.instancePath.substring(1) === header)
 
-    const handleUpdate = () => {
-        if (editedValue && editingCell) {
-            const rowIndex = offSet + editingCell.rowIndex
-            sheetData[rowIndex][headers[editingCell.colIndex]] = editedValue;
-            onUpdate()
-            setEditedValue(null)
-            setEditingCell(null)
-        }
-    }
-
-    const renderCellContent = (rowIndex: number, colIndex: number, cell: string) => {
-        if (editingCell && editingCell.rowIndex === rowIndex && editingCell.colIndex === colIndex) {
-            return (
-                <Input
-                    value={editedValue !== null ? editedValue : cell}
-                    onChange={(e) => setEditedValue(e.target.value)}
-                    height="100%"
-                    onBlur={handleUpdate}
-                />
-            );
-        }
-        return <p>{cell}</p>;
+        return match && constructErrorMessage(match);
     };
 
     return (
         <>
             <Table
-                style={{ borderCollapse: "separate" }}
                 variant="simple">
                 <Thead>
                     <Tr>
-                        {headers.map((header: string, headerIndex: number) => (
+                        {headers.map(({ header }: { header: string }, headerIndex: number) => (
                             <Th key={headerIndex}>{header}</Th>
                         ))}
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {currentTableData.map((row: any, rowIndex: number) => (
+                    {currentTableData.map((row: Record<string, string | number>, rowIndex: number) => (
                         <Tr key={rowIndex}>
-                            {Object.values(row).map((cell: any, colIndex: number) => {
-                                const isError = isErrorCell(rowIndex, colIndex);
-                                const label = isError && (isError.keyword === "enum" ? isError.message + isError.params.allowedValues: isError.message);
+                            {headers.map(({ header, type }: { header: string; type: string }, colIndex: number) => {
+                                const isError = isErrorCell(rowIndex, header);
+                                const cell = row[header] || '';
+                                const modifyData = (value: string | number): void => {
+                                    sheetData[offSet + rowIndex][header] = value;
+                                }
                                 return (<Td
                                     key={colIndex}
-                                    border={isError ? '1px solid red' : 'none'}
-                                    onClick={() => {
-                                        if (!editingCell || editingCell.rowIndex !== rowIndex || editingCell.colIndex !== colIndex) {
-                                            setEditedValue(null)
-                                            setEditingCell({ rowIndex, colIndex })
-                                        }
-                                    }}
                                 >
-                                    {isError ?
-                                        <Tooltip label={label} placement="bottom">
-                                            {renderCellContent(rowIndex, colIndex, cell)}
-                                        </Tooltip>
-                                        : <>{renderCellContent(rowIndex, colIndex, cell)}</>
-                                    }
+                                    <EditableCell
+                                        modifyData={modifyData}
+                                        cell={cell}
+                                        isError={isError}
+                                        dataType={type}
+                                        onUpdate={onUpdate} />
                                 </Td>)
                             })}
                         </Tr>

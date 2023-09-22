@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import {
   Button,
@@ -15,14 +15,14 @@ import {
 import { useTranslation } from 'react-i18next'
 import { FcDataSheet } from 'react-icons/fc'
 
-const DataFileUploader = ({ isDisabled, inFile, filename, onFileChanged, onFileUpload, file }: {
+const DataFileUploader = ({ isDisabled, filename, onFileChanged, onFileUpload, file }: {
   isDisabled: boolean | undefined,
-  inFile: React.RefObject<HTMLInputElement>,
   filename: string,
   onFileChanged: (e: React.ChangeEvent<HTMLInputElement>) => void,
   onFileUpload: () => void
   file: File | null
 }) => {
+  const inFile = useRef<HTMLInputElement>(null)
   const { t } = useTranslation()
   const invalid = false
   return (
@@ -43,16 +43,16 @@ const DataFileUploader = ({ isDisabled, inFile, filename, onFileChanged, onFileU
             ref={inFile}
             onChange={onFileChanged}
             accept="
-application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
-application/vnd.ms-excel,
-.xlsb,
-.ods
-"
+              application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+              application/vnd.ms-excel,
+              .xlsb,
+              .ods
+            "
             style={{ display: 'none' }}
           />
           <Input
             placeholder={t('safeInputs.inputBar') || ''}
-            onClick={() =>
+            onClick={() => 
               inFile && inFile.current && inFile.current.click()
             }
             readOnly
