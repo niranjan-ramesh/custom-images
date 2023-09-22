@@ -7,11 +7,11 @@ import { ErrorObject } from 'ajv';
 import EditableCell from './EditableCell';
 import { headers, constructErrorMessage } from '../utils/errorUtils'
 
-function PaginatedTable({ sheetData, dataErrors, onUpdate }: { sheetData: Record<string, string|number>[]; dataErrors: { valid: boolean; errors: ErrorObject[] }[]; onUpdate: () => void }) {
+function PaginatedTable({ sheetData, dataErrors, onUpdate }: { sheetData: Record<string, string | number>[]; dataErrors: { valid: boolean; errors: ErrorObject[] }[]; onUpdate: () => void }) {
     const PageSize = 10;
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const currentTableData: Record<string, string|number>[] = useMemo(() => {
+    const currentTableData: Record<string, string | number>[] = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * PageSize;
         const lastPageIndex = firstPageIndex + PageSize;
         return sheetData.slice(firstPageIndex, lastPageIndex);
@@ -25,7 +25,9 @@ function PaginatedTable({ sheetData, dataErrors, onUpdate }: { sheetData: Record
             return false;
         }
 
-        const match = error.errors.find((error: any) => error.instancePath.substring(1) === header)
+        const match = error.errors.find((error: ErrorObject) =>
+            (error.instancePath.substring(1) === header)
+            || (error.params.missingProperty === header))
 
         return match && constructErrorMessage(match);
     };

@@ -38,7 +38,7 @@ export const constructErrorMessage = (error: ErrorObject):string => {
           return `${error.instancePath} must be one of the following values: ${error.params.allowedValues?.join(", ")}.`;
     
         case "required":
-          return `${error.instancePath} is required.`;
+          return `${error.instancePath || error.params.missingProperty} is required.`;
     
         case "additionalProperties":
           return `${error.instancePath} does not allow the property '${error.params.additionalProperty}'.`;
