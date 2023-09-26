@@ -7,7 +7,8 @@ export const parse = async (file: File) => {
   const fileData = await file.arrayBuffer()
   signal({ state: 'LOADING' })
   const workbook = read(fileData)
-  const sheets: { sheetName: string; data: any }[] = []
+  const sheets: { sheetName: string; data: any; }[] = []
+  let totalErrors = 0
   workbook.SheetNames.forEach((sheetName) => {
     sheets.push({
       sheetName,
@@ -15,12 +16,12 @@ export const parse = async (file: File) => {
     })
   })
   if (workbook.SheetNames.length > 0) {
-    signal({ state: 'DONE', filename: file.name, workbook, sheets })
+    signal({ state: 'DONE', filename: file.name, workbook, sheets, totalErrors })
     // const payload_str = JSON.stringify(payload)
   } else postMessage('ERROR!')
 }
 
-export type SheetData = { sheetName: string; data: any }
+export type SheetData = { sheetName: string; data: any; }
 
 interface ParseEventLoadingState {
   state: 'LOADING'
@@ -30,7 +31,8 @@ interface ParseEventDoneState {
   state: 'DONE'
   filename: string
   workbook: WorkBook
-  sheets: SheetData[]
+  sheets: SheetData[],
+  totalErrors: number
 }
 
 export type ParseEvent = { type: 'ParseEvent' } & (

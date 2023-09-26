@@ -86,7 +86,7 @@ export default function TopHeaderModified() {
         fontFamily="sans-serif"
         w="auto"
       >
-        Why Safe Inputs PoC
+        Why TB Upload PoC
       </Text>
     </Link>
   )
@@ -162,7 +162,7 @@ export default function TopHeaderModified() {
           <>
             <Flex bg="" w="full" py={3}>
               <Container maxW="7xl" px={10}>
-                <Text fontSize="calc(10px + 2vmin)">Safe Inputs PoC </Text>
+                <Text fontSize="calc(10px + 2vmin)">TB Upload PoC </Text>
               </Container>
             </Flex>
 
@@ -184,7 +184,7 @@ export default function TopHeaderModified() {
                   >
         
                     <Tab _selected={{ outline: 'variant', bg: '#BBBBBB',boxShadow:"rgba(0, 0, 0, 0.4) 0px 2px 4px" }}>
-                      Safe inputs PoC
+                      TB Upload PoC
                     </Tab>
 
                     <Tab _selected={{ outline: 'variant', bg: '#BBBBBB',boxShadow:"rgba(0, 0, 0, 0.4) 0px 2px 4px" }}>Two</Tab>
