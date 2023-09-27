@@ -1,5 +1,5 @@
 title: |md
-  # TB Project MVP Architecture
+  # TB Project Prototype Architecture
 |
 
 Downstream Consumers: {
@@ -18,14 +18,8 @@ PHAC: {
       icon: https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/119_Excel_logo_logos-512.png
     }
   }
-  Yubikey: {
-    shape: image
-    icon: https://www.yubico.com/wp-content/uploads/2021/02/illus-yubikey-r2%E2%80%93dkteal.svg
-  }
-  Epidemiologists -> Yubikey
 }
 
-PHAC.Yubikey -> tb-analytics.tb-analytics-iam: Users use MFA with security key (Yubikey)
 
 PHAC.Epidemiologists -> PHAC.Email.P/T Upstream Data
 PHAC.Email.P/T Upstream Data -> tb-analytics.Google Cloud Storage.tb-analytics: Users securely upload data to object storage
