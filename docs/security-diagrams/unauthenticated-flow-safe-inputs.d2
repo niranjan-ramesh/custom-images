@@ -1,0 +1,38 @@
+title: |md
+  # Unauthenticated User Flow
+|
+
+direction: right
+
+"": {
+  shape: sequence_diagram
+
+  user: User
+  server: Server
+  middleware: JWT Middleware
+  gcs: GCS Object Storage
+  smtp: SMTP Relay Server
+
+  user -> server: GET /
+  server -> middleware: `JWT` in Auth header AND `JWT` is valid
+  middleware -> server: false
+  server -> user: res.redirect('/login')
+  user -> user: enter email address
+  user -> server: POST /login (email address in payload)
+  server -> server: verify email domain in whitelist
+  server -> smtp: request email with embeded /verify link with JWT
+  smtp -> user: send email with /verify link
+  user -> user: open email and click /verify link
+  user -> server: POST /verify (JWT in url)
+  server -> middleware: `JWT` present AND `JWT` is valid
+  middleware -> server: true
+  server -> user: REDIRECT / (with JWT attached)
+  user -> server: GET /
+  server -> middleware: `JWT` in Auth header AND `JWT` is valid
+  middleware -> server: true
+  server -> user: res.sendFile(__dirname, 'public/index.html')
+  user -> user: json schema client-side verify
+  user -> server: POST /upload (parsed JSON in payload)
+  server -> server: json schema server-side verify
+  server -> gcs: write parquet file to prefix /raw/<YYYY>/<MM>/<DD>/<email>/
+}

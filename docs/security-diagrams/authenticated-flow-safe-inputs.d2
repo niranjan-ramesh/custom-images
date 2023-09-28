@@ -1,0 +1,23 @@
+title: |md
+  # Authenticated User Flow
+|
+
+direction: right
+
+"": {
+  shape: sequence_diagram
+
+  user: User
+  server: Server
+  middleware: JWT Middleware
+  gcs: GCS Object Storage
+
+  user -> server: GET /
+  server -> middleware: `JWT` in Auth header AND `JWT` is valid
+  middleware -> server: true
+  server -> user: res.sendFile(__dirname, 'public/index.html')
+  user -> user: json schema client-side verify
+  user -> server: POST /upload (parsed JSON in payload)
+  server -> server: json schema server-side verify
+  server -> gcs: write parquet file to prefix /raw/<YYYY>/<MM>/<DD>/<email>/
+}
