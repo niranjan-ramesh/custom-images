@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { Box } from '@chakra-ui/react'
 import { Outlet } from 'react-router-dom'
 
 import Footer from '../live_menu_footer.tsx/footer'
@@ -10,7 +11,9 @@ export default function NavPage() {
   return (
     <>
       <TopHeader />
-
+      <Box className="App-header" mb={2}>
+        TB Upload
+      </Box>
       {/* Outlet function used by React-Router-Dom to nest the child routes/elements when rendered.   */}
       <Outlet  />
       <Footer  />
