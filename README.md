@@ -1,6 +1,10 @@
 # Safe Inputs
 This is a Proof of Concept project demonstrating input handling - providing a safe alternative to emailed spreadsheets.
- 
+
+## Editable Table 
+
+![Editable Table Demo](./docs/gifs/editable-table-demo.gif)
+
 ## Why move away from emailed spreadsheets?
  
 Complicated files like PDFs and excel spreadsheets use quick, but [memory unsafe](https://alexgaynor.net/2019/aug/12/introduction-to-memory-unsafety-for-vps-of-engineering/) languages [like C and C++ when parsing files](https://security.googleblog.com/2022/12/memory-safe-languages-in-android-13.html) to open.  This means that these types of files can be [prone to embedded malware](https://www.hse.ie/eng/services/publications/conti-cyber-attack-on-the-hse-full-report.pdf).
