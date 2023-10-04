@@ -4,4 +4,6 @@
 deploy
 **/nats.creds
 *.xlsx
+*.parquet
+*.csv
 !analytics-environment/tests/*.xlsx
