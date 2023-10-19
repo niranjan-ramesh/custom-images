@@ -33,8 +33,6 @@ print(merged_data)
 ```{r}
 crosstab <- xtabs( ~ Gender + Survey_Year, data = df)
 print(crosstab)
-
-
 ```
 ```
 
