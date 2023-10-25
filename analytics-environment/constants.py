@@ -110,3 +110,9 @@ HIV_STATUS = [
     "Test refused",
     "Unknown",
 ]
+
+CAUSES_OF_DEATH = ["Contributed, but wasn't the underlying cause", "Did not contribute to death/incidental", "Underlying cause of death", "Unknown"]
+
+OUTCOMES = ['Adherent', 'Deceased', 'Other', 'Drug reaction/intolerance', 'Left BC-within Canada', 'Left Province', 'Transferred', 'Left Canada', 'Lost to follow up', 'Non-adherent', 'No Data', 'Other', None, "Contributed, but wasn't the underlying cause"]
+
+CHECK_UNCHECK = ["X", "", None]
