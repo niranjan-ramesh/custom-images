@@ -22,8 +22,8 @@ analytics-environment
 
 It is best to view the notebook files in the following order:
 
-1. [**generate-synthetic-data.ipynb**](generate-synthetic-data.ipynb): Consists of code to generate fake Case file and Outcomes file data for Alberta, BC and Manitoba.
-2. [**constants.py**](constants.py): Consists of constant values that can be used for fake data generation.
-3. [**BCDataTransformation.ipynb**](BCDataTransformation.ipynb): Consists of python code to transform the fake BC data to the common format.
+1. [**generate-synthetic-data.ipynb**](generate-synthetic-data.ipynb): Consists of code to generate synthetic Case file and Outcomes file data for Alberta, BC and Manitoba.
+2. [**constants.py**](constants.py): Consists of constant values that can be used for synthetic data generation.
+3. [**BCDataTransformation.ipynb**](BCDataTransformation.ipynb): Consists of python code to transform the synthetic BC data to the common format.
 4. [**Reporting.ipynb**](Reporting.ipynb): Consists of sample visualizations and final data tables for trends from TB data.
 5. [**SampleRNotebook.ipynb**](SampleRNotebook.ipynb): Consists of sample R code for processing TB data. 
