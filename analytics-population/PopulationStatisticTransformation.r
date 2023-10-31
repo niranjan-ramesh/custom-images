@@ -1,9 +1,10 @@
 library(readxl)
 library(writexl)
+library("ggplot2")
 
 #Load data from file
-file_path_incoming_data <- "INACData.xlsx"
-file_path_outgoing_data <- "CTBRSResults.xlsx"
+file_path_incoming_data <- "analytics-population/data/INACData.xlsx"
+file_path_outgoing_data <- "analytics-population/data/CTBRSResults.xlsx"
 
 full_data <- as.data.frame(
   read_excel(
@@ -103,3 +104,6 @@ for (region in names(region_column)) {
 }
 
 write_xlsx(data_frame_out, file_path_outgoing_data)
+
+#Graphic
+ggplot(data_frame_out, aes(Canada,Age.group)) + geom_col()
