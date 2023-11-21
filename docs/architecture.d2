@@ -22,19 +22,19 @@ PHAC: {
 
 
 PHAC.Epidemiologists -> PHAC.Email.P/T Upstream Data
-PHAC.Email.P/T Upstream Data -> tb-analytics.Google Cloud Storage.tb-analytics: Users securely upload data to object storage
+PHAC.Email.P/T Upstream Data -> tb-analytics.Cloud Object Storage.tb-analytics: Users securely upload data to object storage
 
 tb-analytics: {
   tb-analytics-iam: {
     shape: image
     icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FSecurity%2FCloud%20IAM.svg
   }
-  GCP Project: {
+  Project Scope: {
     shape: image
     icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FDeveloper%20Tools%2FCloud%20SDK.svg
   }
 
-  Google Cloud Storage: {
+  Cloud Object Storage: {
     "": {
       shape: image
       icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FStorage%2FCloud%20Storage.svg
@@ -51,21 +51,21 @@ tb-analytics: {
     }
   }
 
-  Vertex AI Workbench: {
+  Managed Notebook Service: {
     Managed Jupyterlab: {
       shape: image
       icon: https://jupyter.org/assets/homepage/main-logo.svg
     }
 
-    Scheduled/Manual Scripts: {
+    Scheduled\/Manual Scripts: {
       shape: image
       icon: https://icons.terrastruct.com/dev%2Fpython.svg
     }
   }
-  Google Cloud Storage.tb-analytics <-> Vertex AI Workbench.Managed Jupyterlab: GCS FUSE Mount to Filesystem
-  Google Cloud Storage.tb-analytics <-> Vertex AI Workbench.Scheduled/Manual Scripts: GCS FUSE Mount to Filesystem
-  Vertex AI Workbench.Managed Jupyterlab -> Google Cloud Storage.tb-outputs: Outputs, reports, etc.
-  Vertex AI Workbench.Scheduled/Manual Scripts -> Google Cloud Storage.tb-outputs: Outputs, reports, etc.
+  Cloud Object Storage.tb-analytics <-> Managed Notebook Service.Managed Jupyterlab: GCS FUSE Mount to Filesystem
+  Cloud Object Storage.tb-analytics <-> Managed Notebook Service.Scheduled\/Manual Scripts: GCS FUSE Mount to Filesystem
+  Managed Notebook Service.Managed Jupyterlab -> Cloud Object Storage.tb-outputs: Outputs, reports, etc.
+  Managed Notebook Service.Scheduled\/Manual Scripts -> Cloud Object Storage.tb-outputs: Outputs, reports, etc.
 }
 
-tb-analytics.Google Cloud Storage.tb-outputs -> Downstream Consumers
+tb-analytics.Cloud Object Storage.tb-outputs -> Downstream Consumers
