@@ -4,24 +4,35 @@ title: |md
   # TB Logical Diagram
 |
 
-Ingestion: {
-  Excel Workbook from P\/Ts: {
+Legacy Ingestion: {
+  "": {
     shape: image
     icon: https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/119_Excel_logo_logos-512.png
-  }
-
-  Upload via Safe Inputs: {
-    shape: image
-    icon: https://icons.terrastruct.com/tech%2Fbrowser-2.svg
   }
 }
 
 Cloud Project: {
   Data Cleaning: {
-    Data Cleaning Scripts\/Notebooks: {
+    R: {
+      shape: image
+      icon: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/1280px-R_logo.svg.png
+    }
+
+    Python: {
+      shape: image
+      icon: https://icons.terrastruct.com/dev%2Fpython.svg
+    }
+
+    Jupyter Notebooks: {
       shape: image
       icon: https://jupyter.org/assets/homepage/main-logo.svg
     }
+
+    "": |md
+      Epidemiologists own and maintain
+
+      data cleaning code in R/Python.
+    |
   }
 
   Data Management and Storage: {
@@ -32,31 +43,45 @@ Cloud Project: {
   }
 
   Analysis: {
-    Data Analysis Scripts\/Notebooks: {
+    R: {
+      shape: image
+      icon: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/1280px-R_logo.svg.png
+    }
+
+    Python: {
+      shape: image
+      icon: https://icons.terrastruct.com/dev%2Fpython.svg
+    }
+
+    Jupyter Notebooks: {
       shape: image
       icon: https://jupyter.org/assets/homepage/main-logo.svg
     }
+
+    "": |md
+      Epidemiologists write R/Python
+
+      code to analyze TB data.
+    |
   }
 
-  Epidemiologists: {
+  TB Epidemiologists: {
     shape: image
     icon: https://icons.terrastruct.com/essentials%2F359-users.svg
   }
 
+  "": |md
+    Project is only accessed
+
+    by TB Epidemiologists
+  |
 }
 
-
-
-Publish: {
-  Reports: {
+Legacy Outputs: {
+  "": {
     shape: image
     icon: https://icons.terrastruct.com/essentials%2F001-analytics.svg
   }
-
-  Dissemination of Results: {
-    shape: image
-    icon: https://icons.terrastruct.com/essentials%2F140-internet.svg
-  }
 }
 
-Ingestion -> Cloud Project.Data Cleaning -> Cloud Project.Data Management and Storage -> Cloud Project.Analysis -> Publish
+Legacy Ingestion -> Cloud Project.Data Cleaning -> Cloud Project.Data Management and Storage -> Cloud Project.Analysis -> Legacy Outputs
