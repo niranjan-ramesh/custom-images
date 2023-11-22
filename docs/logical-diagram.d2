@@ -1,0 +1,62 @@
+direction: right
+
+title: |md
+  # TB Logical Diagram
+|
+
+Ingestion: {
+  Excel Workbook from P\/Ts: {
+    shape: image
+    icon: https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/119_Excel_logo_logos-512.png
+  }
+
+  Upload via Safe Inputs: {
+    shape: image
+    icon: https://icons.terrastruct.com/tech%2Fbrowser-2.svg
+  }
+}
+
+Cloud Project: {
+  Data Cleaning: {
+    Data Cleaning Scripts\/Notebooks: {
+      shape: image
+      icon: https://jupyter.org/assets/homepage/main-logo.svg
+    }
+  }
+
+  Data Management and Storage: {
+    Cloud Object Storage: {
+      shape: image
+      icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FStorage%2FCloud%20Storage.svg
+    }
+  }
+
+  Analysis: {
+    Data Analysis Scripts\/Notebooks: {
+      shape: image
+      icon: https://jupyter.org/assets/homepage/main-logo.svg
+    }
+  }
+
+  Epidemiologists: {
+    shape: image
+    icon: https://icons.terrastruct.com/essentials%2F359-users.svg
+  }
+
+}
+
+
+
+Publish: {
+  Reports: {
+    shape: image
+    icon: https://icons.terrastruct.com/essentials%2F001-analytics.svg
+  }
+
+  Dissemination of Results: {
+    shape: image
+    icon: https://icons.terrastruct.com/essentials%2F140-internet.svg
+  }
+}
+
+Ingestion -> Cloud Project.Data Cleaning -> Cloud Project.Data Management and Storage -> Cloud Project.Analysis -> Publish
