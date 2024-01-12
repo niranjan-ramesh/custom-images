@@ -1,4 +1,4 @@
-FROM docker.io/rocker/rstudio:latest
+FROM docker.io/rocker/rstudio:4.3.2
 
 ENV RUNROOTLESS "true"
 ENV USERID 0
