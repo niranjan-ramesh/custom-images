@@ -6,9 +6,6 @@ on:
       - main
     paths: 
       - 'jupyter-image/Dockerfile'
-    tags:
-      - '*'
-
 
 env:
   PROJECT_ID: phx-01h7gg8s1qfey7gw6ryqjrxtxe
