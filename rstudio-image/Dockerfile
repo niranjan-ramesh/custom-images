@@ -7,8 +7,9 @@ ENV GROUPID 0
 ENV DISABLE_AUTH "true"
 
 # Set default working directory
-RUN echo 'setwd("/home/")' >> $R_HOME/etc/Rprofile.site
+RUN echo "setwd(\"/home/\")" >> "$R_HOME/etc/Rprofile.site"
 
 WORKDIR /home/
 COPY requirements.R /home/
-RUN Rscript requirements.R && rm requirements.R
+RUN Rscript requirements.R
+RUN rm requirements.R
