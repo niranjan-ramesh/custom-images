@@ -1,5 +1,6 @@
 install.packages(c(
   "dplyr",
   "tidyr",
-  "ggplot2"
+  "ggplot2",
+  "plotly"
 ))
