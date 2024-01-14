@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths: 
-      - 'jupyter-image/Dockerfile'
+      - 'jupyter-image/**'
 
 env:
   PROJECT_ID: phx-01h7gg8s1qfey7gw6ryqjrxtxe
