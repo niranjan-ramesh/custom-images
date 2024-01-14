@@ -3,3 +3,4 @@ ipykernel==6.28.0
 pandas==2.1.4
 openpyxl==3.1.2
 great-expectations==0.18.7
+plotly==5.18.0
