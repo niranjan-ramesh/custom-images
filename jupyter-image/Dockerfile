@@ -27,7 +27,7 @@ RUN adduser -D jupyteruser
 USER jupyteruser
 EXPOSE 8080
 
-ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--port=8080", "--no-browser", "--NotebookApp.token=''"]
+ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--port=8080", "--no-browser", "--NotebookApp.token=''", "--ServerApp.allow_origin='*'']
 
 
 
