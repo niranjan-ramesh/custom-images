@@ -1,8 +1,8 @@
 # Use the Python Alpine Linux base image
 FROM python:3.10-alpine
 
-LABEL description="Docker image for custom Python jupyter kernel in Vertex AI managed notebook instances."
 
+LABEL description="Docker image for custom Python jupyter kernel in Vertex AI managed notebook instances."
 COPY requirements.txt /user/
 WORKDIR /user
 
@@ -21,5 +21,11 @@ WORKDIR /home
 # Cleanup unnecessary files
 RUN rm -rf /tmp/* /root/.cache /root/.npm /usr/lib/python*/ensurepip /usr/lib/python*/turtledemo /usr/lib/python*/test /usr/share/man /user
 
+RUN adduser -D jupyteruser
+USER jupyteruser
 EXPOSE 8080
-ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--port=8080", "--no-browser"]
+
+ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--port=8080", "--no-browser", "--NotebookApp.token=''"]
+
+
+
