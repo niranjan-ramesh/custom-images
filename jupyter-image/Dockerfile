@@ -20,3 +20,6 @@ WORKDIR /home
 
 # Cleanup unnecessary files
 RUN rm -rf /tmp/* /root/.cache /root/.npm /usr/lib/python*/ensurepip /usr/lib/python*/turtledemo /usr/lib/python*/test /usr/share/man /user
+
+EXPOSE 8080
+ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--port=8080", "--no-browser"]
