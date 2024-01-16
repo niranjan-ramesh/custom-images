@@ -12,3 +12,4 @@ RUN echo "setwd(\"/home/\")" >> "$R_HOME/etc/Rprofile.site"
 WORKDIR /home/
 COPY requirements.R /home/
 RUN Rscript requirements.R && rm requirements.R
+
