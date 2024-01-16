@@ -7,11 +7,6 @@ on:
     paths: 
       - 'rstudio-image/**'
 
-env:
-  PROJECT_ID: phx-01h7gg8s1qfey7gw6ryqjrxtxe
-  REGION: northamerica-northeast1
-  ARTIFACT_REGISTRY: northamerica-northeast1-docker.pkg.dev/phx-01h7gg8s1qfey7gw6ryqjrxtxe/tb-project
-
 jobs:
 
   build:
@@ -28,7 +23,7 @@ jobs:
         
     - name: "Set image name"
       run: |
-        echo "IMAGE_NAME=$ARTIFACT_REGISTRY/rstudio-env" >> $GITHUB_ENV
+        echo "IMAGE_NAME=rstudio-env" >> $GITHUB_ENV
         
     - name: Build an image from Dockerfile
       working-directory: rstudio-image
