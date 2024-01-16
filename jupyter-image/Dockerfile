@@ -27,7 +27,7 @@ RUN adduser -D jupyteruser
 USER jupyteruser
 EXPOSE 8080
 
-ENTRYPOINT exec jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --NotebookApp.token="" --ServerApp.allow_origin="*"
+ENTRYPOINT exec jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --NotebookApp.token="" --ServerApp.allow_origin="*" --ServerApp.allow_origin_pat="(https?://)?[0–9a-z]+-dot-[\-0–9a-z]*\.notebooks\.googleusercontent\.com"
 
 
 
