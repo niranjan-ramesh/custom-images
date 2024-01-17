@@ -1,5 +1,5 @@
 # Use the Python Alpine Linux base image
-FROM us-docker.pkg.dev/deeplearning-platform-release/gcr.io/base-cpu.py310:latest
+FROM us-docker.pkg.dev/deeplearning-platform-release/gcr.io/base-cpu.py310:m114
 
 
 LABEL description="Docker image for custom jupyter notebook instances."
