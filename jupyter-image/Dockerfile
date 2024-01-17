@@ -22,4 +22,4 @@ WORKDIR /home
 RUN rm -rf /tmp/* /root/.cache /root/.npm /usr/lib/python*/ensurepip /usr/lib/python*/turtledemo /usr/lib/python*/test /usr/share/man /user
 
 EXPOSE 8080
-ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--port=8080", "NotebookApp.open_browser = False", 'ServerApp.token = ""', 'ServerApp.password = ""', "ServerApp.port = 8080", 'ServerApp.allow_origin_pat = "(^https://8080-dot-[0-9]+-dot-devshell\.appspot\.com$)|(^https://colab\.(?:sandbox|research)\.google\.com$)|(^(https?://)?[0-9a-z\-]+\.[0-9a-z\-]+\.cloudshell\.dev$)|(^(https?://)ssh\.cloud\.google\.com/devshell$)"', "ServerApp.allow_remote_access = True"]
+ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--port=8080", "NotebookApp.open_browser = False", 'ServerApp.token = ""', 'ServerApp.password = ""', "ServerApp.port = 8080", 'ServerApp.allow_origin_pat = ".*"', "ServerApp.allow_remote_access = True"]
