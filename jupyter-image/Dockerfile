@@ -12,7 +12,7 @@ WORKDIR /user
 #     build-base=0.5-r3 \
 #     libffi-dev=3.4.4-r3 \
 # # Install python dependencies
-# && pip --no-cache-dir install -r requirements.txt \
+RUN pip --no-cache-dir install -r requirements.txt 
 # # Delete build dependencies
 # && apk del build-deps
 
