@@ -8,7 +8,6 @@ COPY requirements.txt /home/
 WORKDIR /home
 
 RUN pip --no-cache-dir install -r requirements.txt \
-&& rm requirements.txt \
-&& rm -rf /tmp/* /root/.cache /root/.npm /usr/lib/python*/ensurepip /usr/lib/python*/turtledemo /usr/lib/python*/test /usr/share/man 
-RUN rm -R /opt/conda/pkgs/dlenv-base-1.0.20231210-py310_0/share/jupyter/lab/staging/node_modules
-RUN rm -R /usr/local/share/.cache
+&& rm -rf requirements.txt \
+/opt/conda/pkgs/dlenv-base-1.0.20231210-py310_0/share/jupyter/lab/staging/node_modules \
+/usr/local/share/.cache
