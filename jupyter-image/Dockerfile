@@ -1,13 +1,25 @@
 # Use the Python Alpine Linux base image
-FROM us-docker.pkg.dev/deeplearning-platform-release/gcr.io/base-cpu.py310:m114
-# FROM gcr.io/deeplearning-platform-release/sklearn-cpu.py310
+FROM python:3.10-alpine
 
-LABEL description="Docker image for custom jupyter notebook instances."
-COPY requirements.txt /home/
+LABEL description="Docker image for custom Python jupyter kernel in Vertex AI managed notebook instances."
+
+COPY requirements.txt /user/
+WORKDIR /user
+
+# Install build dependencies
+RUN apk --no-cache add --virtual build-deps gcc=13.2.1_git20231014-r0 \
+    linux-headers=6.5-r0 \
+    build-base=0.5-r3 \
+    libffi-dev=3.4.4-r3 \
+# Install python dependencies
+&& pip --no-cache-dir install -r requirements.txt \
+# Delete build dependencies
+&& apk del build-deps
 
 WORKDIR /home
 
-RUN pip --no-cache-dir install -r requirements.txt \
-&& rm -rf requirements.txt \
-/opt/conda/pkgs/dlenv-base-1.0.20231210-py310_0/share/jupyter/lab/staging/node_modules \
-/usr/local/share/.cache
+# Cleanup unnecessary files
+RUN rm -rf /tmp/* /root/.cache /root/.npm /usr/lib/python*/ensurepip /usr/lib/python*/turtledemo /usr/lib/python*/test /usr/share/man /user
+
+EXPOSE 8080
+ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "allow-root", "--port=8080", "NotebookApp.open_browser = False", 'ServerApp.token = ""', 'ServerApp.password = ""', "ServerApp.port = 8080", 'ServerApp.allow_origin_pat = ".*"', "ServerApp.allow_remote_access = True"]
