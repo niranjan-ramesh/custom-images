@@ -1,5 +1,8 @@
 FROM docker.io/rocker/rstudio:4.3.2
 
+RUN apt-get update \
+&& apt-get install -y linux-libc-dev=5.15.0-92.102 
+
 ENV RUNROOTLESS "true"
 ENV USERID 0
 ENV GROUPID 0
