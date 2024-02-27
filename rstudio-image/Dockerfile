@@ -1,9 +1,9 @@
 FROM docker.io/rocker/rstudio:4.3.2
 
-RUN apt-get update \
-&& apt-get install -y --no-install-recommends linux-libc-dev=5.15.0-92.102 \
-&& apt-get clean \
-&& rm -rf /var/lib/apt/lists/*
+# RUN apt-get update \
+# && apt-get install -y --no-install-recommends linux-libc-dev=5.15.0-92.102 \
+# && apt-get clean \
+# && rm -rf /var/lib/apt/lists/*
 
 ENV RUNROOTLESS "true"
 ENV USERID 0
@@ -16,5 +16,5 @@ ENV DISABLE_AUTH "true"
 COPY Rprofile.site "$R_HOME/etc/Rprofile.site"
 
 WORKDIR /home/
-COPY requirements.R /home/
-RUN Rscript requirements.R && rm requirements.R
+# COPY requirements.R /home/
+# RUN Rscript requirements.R && rm requirements.R
